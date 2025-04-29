@@ -151,7 +151,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://yoko.vdmnexus.com",
     "https://www.yoko.vdmnexus.com",
     "https://yokoai.vercel.app",
-    "https://yoko-ai-frontend.vercel.app"
+    "https://yoko-ai-frontend.vercel.app",
+    "https://yoko-ai-backend.onrender.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -175,6 +176,11 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+# Additional CORS settings for development
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_REPLACE_HTTPS_REFERER = True
 
 # Security settings
 if not DEBUG:
