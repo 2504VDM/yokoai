@@ -152,7 +152,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.yoko.vdmnexus.com",
     "https://yokoai.vercel.app",
     "https://yoko-ai-frontend.vercel.app",
-    "https://yoko-ai-backend.onrender.com"
+    "https://yokoai.onrender.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
