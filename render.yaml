@@ -7,9 +7,6 @@ services:
     startCommand: gunicorn config.wsgi:application
     autoDeploy: true
     healthCheckPath: /admin/login/
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.11
     scaling:
       minInstances: 1
       maxInstances: 1
@@ -19,6 +16,8 @@ services:
         - requirements.txt
         - "**/*.py"
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
       - key: DATABASE_URL
         value: postgresql://postgres.zcxterglgimuhwxdveed:S9pKaETUozj5cHGX@aws-0-us-east-1.pooler.supabase.com:6543/postgres
       - key: DJANGO_SECRET_KEY
