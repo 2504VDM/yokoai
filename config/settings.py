@@ -192,10 +192,13 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://yoko.vdmnexus.com",
+    "https://*.vdmnexus.com",
     "https://www.yoko.vdmnexus.com",
     "https://yokoai.vercel.app",
     "https://yoko-ai-frontend.vercel.app",
-    "https://yokoai.onrender.com"
+    "https://yokoai.onrender.com",
+    "https://yokoai-7m30cosb3-2504sports-gmailcoms-projects.vercel.app",
+    "https://*.vercel.app"  # Allow all Vercel preview deployments
 ]
 
 CORS_ALLOW_CREDENTIALS = True
