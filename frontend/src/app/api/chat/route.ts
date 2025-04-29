@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Origin': 'https://yoko.vdmnexus.com'
+        'Origin': process.env.NEXT_PUBLIC_APP_URL || 'https://yoko.vdmnexus.com'
       },
       body: JSON.stringify(body),
     });
