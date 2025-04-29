@@ -18,10 +18,32 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+import logging
+
+logger = logging.getLogger(__name__)
 
 @require_http_methods(["GET", "HEAD"])
 def health_check(request):
-    return JsonResponse({"status": "ok"})
+    try:
+        # Test database connection
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        
+        # Log successful health check
+        logger.info("Health check passed")
+        return JsonResponse({
+            "status": "ok",
+            "database": "connected",
+            "environment": "production" if not connection.settings_dict.get('DEBUG', False) else "development"
+        })
+    except Exception as e:
+        # Log the error
+        logger.error(f"Health check failed: {str(e)}")
+        return JsonResponse({
+            "status": "error",
+            "message": str(e)
+        }, status=500)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

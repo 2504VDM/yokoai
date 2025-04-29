@@ -3,15 +3,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from typing import List, Dict
-
+import logging
 from agent.agent import Agent
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
 class ChatView(APIView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.agent = Agent()
+        try:
+            self.agent = Agent()
+            logger.info("Agent initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize agent: {str(e)}")
+            raise
     
     def post(self, request):
         """Handle chat messages with the agent.
@@ -24,21 +31,36 @@ class ChatView(APIView):
             "thread_id": "optional-thread-id"
         }
         """
-        messages = request.data.get("messages", [])
-        thread_id = request.data.get("thread_id", "default")
-        
-        if not messages:
-            return Response(
-                {"error": "No messages provided"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
         try:
+            messages = request.data.get("messages", [])
+            thread_id = request.data.get("thread_id", "default")
+            
+            logger.info(f"Received chat request - Thread ID: {thread_id}")
+            
+            if not messages:
+                logger.warning("No messages provided in request")
+                return Response(
+                    {"error": "No messages provided"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            logger.debug(f"Processing messages: {messages}")
             response = self.agent.invoke(messages, thread_id)
-            print('Agent response:', response)
+            logger.info("Successfully generated response")
+            
             return Response(response)
-        except Exception as e:
+        except ValueError as e:
+            logger.error(f"Validation error: {str(e)}")
             return Response(
                 {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except Exception as e:
+            logger.error(f"Error processing chat request: {str(e)}")
+            return Response(
+                {
+                    "error": "Internal server error",
+                    "detail": str(e)
+                },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
