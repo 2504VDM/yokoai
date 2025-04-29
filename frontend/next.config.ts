@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://yoko-ai-backend.onrender.com',
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://yokoai.onrender.com',
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'https://yoko.vdmnexus.com'
   },
   async headers() {
@@ -35,11 +35,12 @@ const nextConfig: NextConfig = {
     ];
   },
   async rewrites() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://yokoai.onrender.com';
     return {
       beforeFiles: [
         {
           source: '/api/:path*',
-          destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
+          destination: `${apiUrl}/api/:path*`
         }
       ]
     };
