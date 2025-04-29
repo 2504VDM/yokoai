@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://yoko-ai-backend.onrender.com",
+    "NEXT_PUBLIC_APP_URL": "https://yoko.vdmnexus.com"
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  },
+  "domains": [
+    "yoko.vdmnexus.com"
+  ]
+} 
