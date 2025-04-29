@@ -2,6 +2,7 @@ import os
 import sys
 import django
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
@@ -9,6 +10,13 @@ BASE_DIR = Path(__file__).resolve().parent
 # Add the project directory to the Python path
 if str(BASE_DIR) not in sys.path:
     sys.path.append(str(BASE_DIR))
+
+# Load environment variables
+load_dotenv()
+
+# Ensure DATABASE_URL is set
+if 'DATABASE_URL' not in os.environ:
+    os.environ['DATABASE_URL'] = 'postgresql://postgres.zcxterglgimuhwxdveed:S9pKaETUozj5cHGX@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
