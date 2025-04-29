@@ -3,16 +3,13 @@
 import { useState } from 'react'
 import { Chat } from '@/components/ui/chat'
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/chat/'
-
 interface Message {
   role: 'user' | 'assistant'
   content: string
 }
 
 interface ApiResponse {
-  content: string;
-  additional_kwargs: Record<string, unknown>;
+  content: string
 }
 
 export default function Home() {
@@ -21,9 +18,12 @@ export default function Home() {
 
   const handleSend = async (content: string) => {
     setIsLoading(true);
+    console.log('Request payload:', {
+      messages: [...messages, { role: 'user', content }]
+    });
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -31,16 +31,23 @@ export default function Home() {
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to send message');
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error('Failed to send message');
+      }
 
       const data = await response.json() as ApiResponse;
+      console.log('Response data:', data);
 
       setMessages(prev => [
         ...prev,
         { role: 'user', content },
         { role: 'assistant', content: data.content }
       ]);
-    } catch {
+    } catch (error) {
+      console.error('Error in handleSend:', error);
       setMessages(prev => [
         ...prev,
         { role: 'user', content },
@@ -58,19 +65,27 @@ export default function Home() {
     const truncated = newMessages.slice(0, index + 1)
     setMessages(truncated)
     setIsLoading(true)
+    
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: truncated }),
       })
-      if (!response.ok) throw new Error('Failed to send message')
+      console.log('Edit response status:', response.status);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error('Failed to send message');
+      }
       const data = await response.json() as ApiResponse;
+      console.log('Edit response data:', data);
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: data.content }
       ])
-    } catch {
+    } catch (error) {
+      console.error('Error in handleEdit:', error);
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: 'Sorry, there was an error processing your message.' }
