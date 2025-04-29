@@ -3,7 +3,7 @@ services:
     name: yoko-ai-backend
     env: python
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    startCommand: uvicorn config.asgi:application --host 0.0.0.0 --port $PORT
+    startCommand: gunicorn app:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
