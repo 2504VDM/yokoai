@@ -1,1 +1,1 @@
-web: cd /opt/render/project/src && gunicorn --pythonpath . config.wsgi:application 
+web: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT 
