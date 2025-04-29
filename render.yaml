@@ -22,6 +22,7 @@ services:
         value: postgresql://postgres.zcxterglgimuhwxdveed:S9pKaETUozj5cHGX@aws-0-us-east-1.pooler.supabase.com:6543/postgres
       - key: DJANGO_SECRET_KEY
         generateValue: true
+        length: 64
       - key: DEBUG
         value: false
       - key: ALLOWED_HOSTS
