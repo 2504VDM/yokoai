@@ -11,3 +11,4 @@ gunicorn
 whitenoise
 django-cors-headers
 requests
+uvicorn
