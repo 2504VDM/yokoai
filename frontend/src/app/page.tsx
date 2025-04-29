@@ -10,15 +10,9 @@ interface Message {
   content: string
 }
 
-interface AgentMessage {
+interface ApiResponse {
   content: string;
-  additional_kwargs: Record<string, any>;
-  [key: string]: any;
-}
-
-interface ResponseMessage {
-  role: 'user' | 'assistant';
-  content: string;
+  additional_kwargs: Record<string, unknown>;
 }
 
 export default function Home() {
@@ -39,14 +33,14 @@ export default function Home() {
 
       if (!response.ok) throw new Error('Failed to send message');
 
-      const data = await response.json();
+      const data = await response.json() as ApiResponse;
 
       setMessages(prev => [
         ...prev,
         { role: 'user', content },
         { role: 'assistant', content: data.content }
       ]);
-    } catch (error) {
+    } catch {
       setMessages(prev => [
         ...prev,
         { role: 'user', content },
@@ -57,13 +51,10 @@ export default function Home() {
     }
   }
 
-  // Handle editing a user message and getting a new agent response
   const handleEdit = async (index: number, newContent: string) => {
-    // Update the user message at index
     const newMessages = messages.map((msg, i) =>
       i === index ? { ...msg, content: newContent } : msg
     )
-    // Truncate conversation after the edited user message
     const truncated = newMessages.slice(0, index + 1)
     setMessages(truncated)
     setIsLoading(true)
@@ -74,12 +65,12 @@ export default function Home() {
         body: JSON.stringify({ messages: truncated }),
       })
       if (!response.ok) throw new Error('Failed to send message')
-      const data = await response.json()
+      const data = await response.json() as ApiResponse;
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: data.content }
       ])
-    } catch (error) {
+    } catch {
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: 'Sorry, there was an error processing your message.' }
@@ -102,7 +93,7 @@ export default function Home() {
           />
         </div>
         <div className="w-full text-center mt-4 text-xs text-gray-400">
-          v0.2
+          v0.2.1
           Made by VDM Nexus
         </div>
       </div>
