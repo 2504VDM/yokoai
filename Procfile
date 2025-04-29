@@ -1,1 +1,1 @@
-web: gunicorn config.wsgi:application 
+web: cd /opt/render/project/src && gunicorn --pythonpath . config.wsgi:application 
