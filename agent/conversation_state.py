@@ -25,6 +25,10 @@ class ConversationState(BaseModel):
             "thread_id": self.thread_id
         }
 
+    def get(self, key: str, default: Any = None) -> Any:
+        """Get a value from the state by key."""
+        return getattr(self, key, default)
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'ConversationState':
         """Create state from dictionary format."""
