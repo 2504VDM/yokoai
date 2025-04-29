@@ -14,8 +14,8 @@ class ConversationState(BaseModel):
     last_updated: datetime = Field(default_factory=datetime.now)
     thread_id: str = Field(default="default")
 
-    def dict(self, *args, **kwargs) -> Dict[str, Any]:
-        """Override dict method to ensure all fields are included."""
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert state to dictionary format."""
         return {
             "messages": self.messages,
             "current_intent": self.current_intent,
@@ -24,6 +24,13 @@ class ConversationState(BaseModel):
             "last_updated": self.last_updated.isoformat(),
             "thread_id": self.thread_id
         }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'ConversationState':
+        """Create state from dictionary format."""
+        if isinstance(data.get('last_updated'), str):
+            data['last_updated'] = datetime.fromisoformat(data['last_updated'])
+        return cls(**data)
 
 class ConversationManager:
     def __init__(self):
@@ -49,7 +56,7 @@ class ConversationManager:
     
     async def _classify_intent(self, state: Dict) -> Dict:
         """Classifies the user's intent from the latest message."""
-        current_state = ConversationState(**state)
+        current_state = ConversationState.from_dict(state)
         if not current_state.messages:
             return {"current_intent": "greeting"}
             
@@ -61,7 +68,7 @@ class ConversationManager:
     
     async def _update_context(self, state: Dict) -> Dict:
         """Updates the conversation context based on the current state."""
-        current_state = ConversationState(**state)
+        current_state = ConversationState.from_dict(state)
         context = current_state.context.copy()
         
         # Update context based on the latest message and intent
@@ -80,8 +87,8 @@ class ConversationManager:
     async def _generate_response(self, state: Dict) -> Dict:
         """Generates a response based on the current state."""
         # Convert dict state back to ConversationState
-        current_state = ConversationState(**state)
-        return current_state.dict()
+        current_state = ConversationState.from_dict(state)
+        return current_state.to_dict()
     
     async def process_message(self, message: str, thread_id: str = "default") -> Dict[str, Any]:
         """Process a new message through the conversation graph."""
@@ -95,5 +102,5 @@ class ConversationManager:
         )
         
         # Run the message through the graph
-        final_state = await self.graph.ainvoke(initial_state.dict(), config)
-        return ConversationState(**final_state).dict() 
+        final_state = await self.graph.ainvoke(initial_state.to_dict(), config)
+        return ConversationState.from_dict(final_state).to_dict() 
