@@ -90,7 +90,10 @@ class ConversationManager:
     
     async def _generate_response(self, state: Dict) -> Dict:
         """Generates a response based on the current state."""
-        # Convert dict state back to ConversationState
+        # If state is already a ConversationState, just return its dict form
+        if isinstance(state, ConversationState):
+            return state.to_dict()
+        # Otherwise, convert dict state to ConversationState
         current_state = ConversationState.from_dict(state)
         return current_state.to_dict()
     
