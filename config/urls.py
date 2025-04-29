@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 
+@require_http_methods(["GET", "HEAD"])
 def health_check(request):
     return JsonResponse({"status": "ok"})
 
@@ -25,4 +27,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('', health_check, name='health_check'),  # Root URL handler
+    path('health/', health_check, name='health_check_alt'),  # Alternative health check URL
 ]
