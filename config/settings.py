@@ -50,10 +50,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Must be at the top
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add whitenoise middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -177,13 +177,17 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# Additional CORS settings for development
+# Additional CORS settings
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 hours
+CORS_ALLOW_PRIVATE_NETWORK = True
+
+# Development settings
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
     CORS_REPLACE_HTTPS_REFERER = True
-
-# Security settings
-if not DEBUG:
+else:
+    # Production security settings
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
