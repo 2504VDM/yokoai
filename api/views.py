@@ -5,6 +5,7 @@ from rest_framework import status
 from typing import List, Dict
 import logging
 from agent.agent import Agent
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -45,10 +46,16 @@ class ChatView(APIView):
                 )
             
             logger.debug(f"Processing messages: {messages}")
-            response = self.agent.invoke(messages, thread_id)
-            logger.info("Successfully generated response")
             
+            # Run the async agent in the event loop
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            response = loop.run_until_complete(self.agent.invoke(messages, thread_id))
+            loop.close()
+            
+            logger.info("Successfully generated response")
             return Response(response)
+            
         except ValueError as e:
             logger.error(f"Validation error: {str(e)}")
             return Response(
