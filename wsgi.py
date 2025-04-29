@@ -7,9 +7,10 @@ import os
 import sys
 
 # Add the project directory to the Python path
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if path not in sys.path:
-    sys.path.append(path)
+current_path = os.path.abspath(os.path.dirname(__file__))
+project_path = os.path.dirname(current_path)
+if current_path not in sys.path:
+    sys.path.append(current_path)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
