@@ -4,7 +4,7 @@
   "framework": "nextjs",
   "installCommand": "npm install",
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://yoko-ai-backend.onrender.com",
+    "NEXT_PUBLIC_API_URL": "https://yokoai.onrender.com/",
     "NEXT_PUBLIC_APP_URL": "https://yoko.vdmnexus.com"
   },
   "git": {
