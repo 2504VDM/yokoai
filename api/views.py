@@ -6,6 +6,7 @@ from typing import List, Dict
 import logging
 from agent.agent import Agent
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 logger = logging.getLogger(__name__)
 
@@ -46,15 +47,14 @@ class ChatView(APIView):
                 )
             
             logger.debug(f"Processing messages: {messages}")
-            # Run the agent.invoke in a thread pool to handle the async operation
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                response = loop.run_until_complete(self.agent.invoke(messages, thread_id))
-                logger.info("Successfully generated response")
-                return Response(response)
-            finally:
-                loop.close()
+            
+            # Run the agent.invoke in a thread pool
+            with ThreadPoolExecutor() as executor:
+                response = executor.submit(self.agent.invoke, messages, thread_id).result()
+            
+            logger.info("Successfully generated response")
+            return Response(response)
+            
         except ValueError as e:
             logger.error(f"Validation error: {str(e)}")
             return Response(
