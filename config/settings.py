@@ -30,6 +30,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-default-dev-key-do-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
+# Environment setting
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'production')
+
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com,yoko.vdmnexus.com,.vdmnexus.com').split(',')
 
 # Logging Configuration
@@ -123,6 +126,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
 
 # Database
@@ -192,7 +196,6 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://yoko.vdmnexus.com",
-    "https://*.vdmnexus.com",
     "https://www.yoko.vdmnexus.com",
     "https://yokoai.vercel.app",
     "https://yoko-ai-frontend.vercel.app",
@@ -201,32 +204,20 @@ CORS_ALLOWED_ORIGINS = [
     "https://*.vercel.app"  # Allow all Vercel preview deployments
 ]
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
-
 # Additional CORS settings
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_PREFLIGHT_MAX_AGE = 86400  # 24 hours
 CORS_ALLOW_PRIVATE_NETWORK = True
+CORS_ORIGIN_ALLOW_ALL = False  # Keep this false for security
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    "https://yoko.vdmnexus.com",
+    "https://www.yoko.vdmnexus.com"
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https:\/\/.*\.vdmnexus\.com$",  # Allow all subdomains of vdmnexus.com
+    r"^https:\/\/.*\.vercel\.app$"      # Allow all vercel.app subdomains
+]
 
 # Development settings
 if DEBUG:

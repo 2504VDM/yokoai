@@ -10,8 +10,20 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://yokoai.onrender.com',
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'https://yoko.vdmnexus.com'
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || (
+      process.env.VERCEL_ENV === 'production' 
+        ? 'https://yokoai.onrender.com'
+        : process.env.VERCEL_ENV === 'preview' 
+          ? 'https://yokoai-staging.onrender.com'
+          : 'http://localhost:8000'
+    ),
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || (
+      process.env.VERCEL_ENV === 'production'
+        ? 'https://yoko.vdmnexus.com'
+        : process.env.VERCEL_ENV === 'preview'
+          ? 'https://yokoai-staging.vercel.app'
+          : 'http://localhost:3000'
+    )
   },
   async headers() {
     return [
@@ -35,13 +47,21 @@ const nextConfig: NextConfig = {
     ];
   },
   async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://yokoai.onrender.com';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || (
+      process.env.VERCEL_ENV === 'production' 
+        ? 'https://yokoai.onrender.com'
+        : process.env.VERCEL_ENV === 'preview' 
+          ? 'https://yokoai-staging.onrender.com'
+          : 'http://localhost:8000'
+    );
     return {
       beforeFiles: [
+        // Handle paths without trailing slash
         {
           source: '/api/:path*',
           destination: `${apiUrl}/api/:path*/`
         },
+        // Handle paths with trailing slash
         {
           source: '/api/:path*/',
           destination: `${apiUrl}/api/:path*/`
