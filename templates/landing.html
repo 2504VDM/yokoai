@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YokoAI - Je AI Border Collie Assistent</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .logo {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 2rem;
+            animation: bounce 2s infinite;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .call-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            width: 200px;
+        }
+        
+        .call-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .call-button:active {
+            transform: translateY(0);
+        }
+        
+        .paw-icon {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/static/images/yoko-logo.png" alt="Yoko Logo" class="logo">
+        <h1>Welkom bij YokoAI</h1>
+        <p>Je persoonlijke AI Border Collie assistent is klaar om je te helpen! Klik op de knop hieronder om Yoko te roepen.</p>
+        <button class="call-button" onclick="openChat()">
+            <span class="paw-icon">🐾</span>
+            Roep Yoko
+        </button>
+    </div>
+
+    <script>
+        function openChat() {
+            // Redirect to the chat page
+            window.location.href = '/chat/';
+        }
+    </script>
+</body>
+</html> 

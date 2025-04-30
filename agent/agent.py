@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 import json
 from agent.character import AGENT_CHARACTER_PROMPT
-from agent.conversation_state import ConversationState
+from agent.mcp import ModelContextProtocol
 
 # Load environment variables
 load_dotenv()
@@ -25,10 +25,10 @@ class Agent:
             anthropic_api_key=api_key
         )
         
-        # System message to define the agent's personality
-        self.system_message = SystemMessage(content=AGENT_CHARACTER_PROMPT)
-        # Initialize conversation state
-        self.conversation_state = ConversationState()
+        # Initialize MCP with system prompt
+        self.mcp = ModelContextProtocol(
+            system_prompt=AGENT_CHARACTER_PROMPT
+        )
 
     def invoke(self, messages: List[Dict[str, str]], thread_id: str = "default") -> Dict[str, Any]:
         """Invoke the agent with a list of messages.
@@ -43,18 +43,24 @@ class Agent:
         print("Received messages:", json.dumps(messages, indent=2))
         print(f"Thread ID: {thread_id}")
         
-        # Update conversation state
-        self.conversation_state.messages = messages
-        self.conversation_state.thread_id = thread_id
+        # Update MCP thread ID
+        self.mcp.thread_id = thread_id
         
-        # Convert messages to LangChain format
-        langchain_messages = [self.system_message]
+        # Process each message through MCP
         for msg in messages:
             print(f"Processing message - Role: {msg['role']}, Content: {msg['content']}")
-            if msg["role"] == "user":
-                langchain_messages.append(HumanMessage(content=msg["content"]))
-            elif msg["role"] == "assistant":
-                langchain_messages.append(AIMessage(content=msg["content"]))
+            # Get full context from MCP
+            context = self.mcp.process_message(msg)
+            
+            # Convert context to LangChain format
+            langchain_messages = []
+            for ctx_msg in context:
+                if ctx_msg["role"] == "system":
+                    langchain_messages.append(SystemMessage(content=ctx_msg["content"]))
+                elif ctx_msg["role"] == "user":
+                    langchain_messages.append(HumanMessage(content=ctx_msg["content"]))
+                elif ctx_msg["role"] == "assistant":
+                    langchain_messages.append(AIMessage(content=ctx_msg["content"]))
         
         print("Converted messages to LangChain format:", langchain_messages)
         
@@ -62,6 +68,10 @@ class Agent:
         response = self.model.invoke(langchain_messages)
         print("Model response:", response)
         print("Response content:", response.content)
+        
+        # Add assistant's response to context
+        assistant_msg = {"role": "assistant", "content": response.content}
+        self.mcp.process_message(assistant_msg)
         
         # Only return the new assistant message
         result = {"content": response.content}

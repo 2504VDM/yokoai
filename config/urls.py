@@ -21,6 +21,7 @@ from django.views.decorators.http import require_http_methods
 import logging
 from django.conf import settings
 import os
+from api.views import landing_page, chat_page
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +51,7 @@ def health_check(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('', health_check, name='health_check'),  # Root URL handler
-    path('health/', health_check, name='health_check_alt'),  # Alternative health check URL
+    path('health/', health_check, name='health_check'),
+    path('', landing_page, name='landing_page'),
+    path('chat/', chat_page, name='chat_page'),
 ]
