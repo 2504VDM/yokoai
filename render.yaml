@@ -1,45 +1,58 @@
 services:
+  # Production service
   - type: web
     name: yokoai
     env: python
-    region: ohio
+    region: frankfurt
+    plan: free
+    branch: main
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    startCommand: cd /opt/render/project/src && gunicorn app:app --bind 0.0.0.0:10000
-    autoDeploy: true
-    healthCheckPath: /
-    scaling:
-      minInstances: 1
-      maxInstances: 1
-      targetMemoryPercent: 60
-    buildFilter:
-      paths:
-        - requirements.txt
-        - "**/*.py"
+    startCommand: cd /opt/render/project/src && gunicorn config.wsgi:application --bind 0.0.0.0:10000
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.11
-      - key: DATABASE_URL
-        value: postgresql://postgres.zcxterglgimuhwxdveed:S9pKaETUozj5cHGX@aws-0-us-east-1.pooler.supabase.com:6543/postgres
-      - key: DJANGO_SECRET_KEY
-        generateValue: true
-        length: 64
-      - key: DEBUG
-        value: false
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com,.vercel.app,.vdmnexus.com"
-      - key: CORS_ALLOWED_ORIGINS
-        value: "https://yoko.vdmnexus.com,https://www.yoko.vdmnexus.com,https://yokoai.vercel.app,https://yoko-ai-frontend.vercel.app,https://yokoai-7m30cosb3-2504sports-gmailcoms-projects.vercel.app"
-      - key: CORS_ORIGIN_WHITELIST
-        value: "https://yoko.vdmnexus.com,https://www.yoko.vdmnexus.com"
-      - key: CORS_ALLOW_CREDENTIALS
-        value: "true"
-      - key: CORS_ALLOW_ALL_ORIGINS
-        value: "false"
+        value: 3.11.0
       - key: ANTHROPIC_API_KEY
         sync: false
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "false"
+      - key: CORS_ALLOW_CREDENTIALS
+        value: "true"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://yoko.vdmnexus.com,https://www.yoko.vdmnexus.com"
+      - key: CORS_ORIGIN_WHITELIST
+        value: "https://yoko.vdmnexus.com,https://www.yoko.vdmnexus.com"
+      - key: DEBUG
+        value: "false"
+      - key: PORT
+        value: 10000
       - key: PYTHONPATH
         value: /opt/render/project/src
-      - key: DJANGO_SETTINGS_MODULE
-        value: config.settings
+
+  # Staging service
+  - type: web
+    name: yokoai-staging
+    env: python
+    region: frankfurt
+    plan: free
+    branch: develop
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: cd /opt/render/project/src && gunicorn config.wsgi:application --bind 0.0.0.0:10000
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "false"
+      - key: CORS_ALLOW_CREDENTIALS
+        value: "true"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://yokoai-staging.vercel.app,https://*.vercel.app"
+      - key: CORS_ORIGIN_WHITELIST
+        value: "https://yokoai-staging.vercel.app"
+      - key: DEBUG
+        value: "true"
       - key: PORT
-        value: 10000 
+        value: 10000
+      - key: PYTHONPATH
+        value: /opt/render/project/src 
