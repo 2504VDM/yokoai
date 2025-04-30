@@ -52,6 +52,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('health/', health_check, name='health_check'),
-    path('', landing_page, name='landing_page'),
-    path('chat/', chat_page, name='chat_page'),
 ]
+
+# Add frontend routes only in production
+if os.getenv('ENVIRONMENT', 'production') == 'production':
+    urlpatterns += [
+        path('', landing_page, name='landing_page'),
+        path('chat/', chat_page, name='chat_page'),
+    ]
+else:
+    # In staging, show health check at root URL
+    urlpatterns += [
+        path('', health_check, name='health_check_root'),
+    ]
