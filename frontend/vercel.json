@@ -9,7 +9,25 @@
   },
   "git": {
     "deploymentEnabled": {
-      "main": true
+      "main": true,
+      "develop": true
     }
-  }
+  },
+  "github": {
+    "enabled": true,
+    "silent": true
+  },
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "yokoai-staging.vercel.app"
+        }
+      ],
+      "destination": "https://yokodev.vdmnexus.com",
+      "permanent": true
+    }
+  ]
 } 

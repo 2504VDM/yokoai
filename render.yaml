@@ -47,9 +47,9 @@ services:
       - key: CORS_ALLOW_CREDENTIALS
         value: "true"
       - key: CORS_ALLOWED_ORIGINS
-        value: "https://yokoai-staging.vercel.app,https://*.vercel.app"
+        value: "https://yokodev.vdmnexus.com,https://*.vdmnexus.com"
       - key: CORS_ORIGIN_WHITELIST
-        value: "https://yokoai-staging.vercel.app"
+        value: "https://yokodev.vdmnexus.com"
       - key: DEBUG
         value: "true"
       - key: PORT
