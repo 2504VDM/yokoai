@@ -11,15 +11,29 @@ from django.views.decorators.http import require_http_methods
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import time
+import os
+from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 
 def landing_page(request):
     """Render the landing page."""
+    if os.getenv('ENVIRONMENT', 'production') != 'production':
+        return JsonResponse({
+            "status": "ok",
+            "database": "connected",
+            "environment": os.getenv('ENVIRONMENT', 'production')
+        })
     return render(request, 'landing.html')
 
 def chat_page(request):
     """Render the chat interface."""
+    if os.getenv('ENVIRONMENT', 'production') != 'production':
+        return JsonResponse({
+            "status": "ok",
+            "database": "connected",
+            "environment": os.getenv('ENVIRONMENT', 'production')
+        })
     return render(request, 'chat.html')
 
 # Create your views here.
