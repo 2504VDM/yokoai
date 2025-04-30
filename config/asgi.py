@@ -5,7 +5,6 @@ It exposes the ASGI callable as a module-level variable named ``application``.
 
 import os
 import sys
-
 from django.core.asgi import get_asgi_application
 
 # Add the project directory to the Python path

@@ -24,4 +24,12 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
 from django.core.wsgi import get_wsgi_application
-app = get_wsgi_application() 
+from django.core.asgi import get_asgi_application
+
+# WSGI application
+wsgi_app = get_wsgi_application()
+# ASGI application
+asgi_app = get_asgi_application()
+
+# For compatibility with both WSGI and ASGI
+app = wsgi_app 
