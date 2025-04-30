@@ -27,6 +27,8 @@ services:
         value: 10000
       - key: PYTHONPATH
         value: /opt/render/project/src
+      - key: ENVIRONMENT
+        value: "production"
 
   # Staging service
   - type: web
@@ -55,4 +57,6 @@ services:
       - key: PORT
         value: 10001
       - key: PYTHONPATH
-        value: /opt/render/project/src 
+        value: /opt/render/project/src
+      - key: ENVIRONMENT
+        value: "staging" 

@@ -21,7 +21,7 @@ export default function Home() {
             Yoko AI
           </h1>
           <p className="text-xl text-gray-300 mb-12">
-            Your intelligent AI assistant for seamless conversations and task management
+            Your intelligent AI Border Collie for seamless conversations and task management
           </p>
           
           <motion.button
@@ -33,7 +33,7 @@ export default function Home() {
             className="px-8 py-4 bg-white text-black rounded-lg font-semibold text-lg 
                      hover:bg-gray-100 transition-colors duration-300 relative overflow-hidden"
           >
-            <span className="relative z-10">Start Chatting</span>
+            <span className="relative z-10">Get Yoko</span>
             <motion.div
               className="absolute inset-0 bg-gray-200"
               initial={{ x: '-100%' }}

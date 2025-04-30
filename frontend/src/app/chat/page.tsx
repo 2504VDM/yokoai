@@ -41,12 +41,14 @@ export default function Chat() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ 
+          messages: [...messages, { role: 'user', content: input }]
+        }),
       })
 
       if (!response.ok) throw new Error('Failed to get response')
       
-      const data = await response.json() as ApiResponse
+      const data = await response.json()
       const assistantMessage: Message = { role: 'assistant', content: data.content }
       setMessages(prev => [...prev, assistantMessage])
     } catch (error) {

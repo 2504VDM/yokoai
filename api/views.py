@@ -16,27 +16,29 @@ from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 
-def landing_page(request):
-    """Render the landing page."""
-    if os.getenv('ENVIRONMENT', 'production') != 'production':
+@require_http_methods(["GET"])
+def health_check(request):
+    """Health check endpoint."""
+    try:
+        # Test database connection
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        
+        # Log successful health check
+        logger.info("Health check passed")
         return JsonResponse({
             "status": "ok",
             "database": "connected",
             "environment": os.getenv('ENVIRONMENT', 'production')
         })
-    return render(request, 'landing.html')
-
-def chat_page(request):
-    """Render the chat interface."""
-    if os.getenv('ENVIRONMENT', 'production') != 'production':
+    except Exception as e:
+        # Log the error
+        logger.error(f"Health check failed: {str(e)}")
         return JsonResponse({
-            "status": "ok",
-            "database": "connected",
-            "environment": os.getenv('ENVIRONMENT', 'production')
-        })
-    return render(request, 'chat.html')
-
-# Create your views here.
+            "status": "error",
+            "message": str(e)
+        }, status=500)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ChatView(APIView):
