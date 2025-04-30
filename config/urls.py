@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import logging
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ def health_check(request):
         return JsonResponse({
             "status": "ok",
             "database": "connected",
-            "environment": "production" if not connection.settings_dict.get('DEBUG', False) else "development"
+            "environment": settings.ENVIRONMENT
         })
     except Exception as e:
         # Log the error
