@@ -65,7 +65,7 @@ export default function Chat() {
               animate={{ opacity: 1, x: 0 }}
               className="text-3xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
             >
-              Yoko AI Chat
+              Yoko, The smartest Border Collie in the world!
             </motion.h1>
             <motion.button
               whileHover={{ scale: 1.05 }}
