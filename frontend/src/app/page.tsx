@@ -108,7 +108,7 @@ export default function Home() {
           />
         </div>
         <div className="w-full text-center mt-4 text-xs text-gray-400">
-          v0.2.1
+          v0.2.2
           Made by VDM Nexus
         </div>
       </div>
