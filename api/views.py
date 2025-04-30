@@ -21,7 +21,7 @@ class ChatView(APIView):
             logger.error(f"Failed to initialize agent: {str(e)}")
             raise
     
-    def post(self, request):
+    async def post(self, request):
         """Handle chat messages with the agent.
         
         Expected request format:
@@ -46,16 +46,11 @@ class ChatView(APIView):
                 )
             
             logger.debug(f"Processing messages: {messages}")
-            
-            # Run the async agent in the event loop
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            response = loop.run_until_complete(self.agent.invoke(messages, thread_id))
-            loop.close()
-            
+            # Run the agent.invoke in a thread pool to handle the async operation
+            response = await asyncio.to_thread(self.agent.invoke, messages, thread_id)
             logger.info("Successfully generated response")
-            return Response(response)
             
+            return Response(response)
         except ValueError as e:
             logger.error(f"Validation error: {str(e)}")
             return Response(
