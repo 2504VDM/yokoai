@@ -47,10 +47,14 @@ class ChatView(APIView):
             
             logger.debug(f"Processing messages: {messages}")
             # Run the agent.invoke in a thread pool to handle the async operation
-            response = asyncio.run(self.agent.invoke(messages, thread_id))
-            logger.info("Successfully generated response")
-            
-            return Response(response)
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            try:
+                response = loop.run_until_complete(self.agent.invoke(messages, thread_id))
+                logger.info("Successfully generated response")
+                return Response(response)
+            finally:
+                loop.close()
         except ValueError as e:
             logger.error(f"Validation error: {str(e)}")
             return Response(
