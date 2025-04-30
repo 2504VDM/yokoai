@@ -1,114 +1,35 @@
 'use client'
 
-import { useState } from 'react'
-import { Chat } from '@/components/ui/chat'
-
-interface Message {
-  role: 'user' | 'assistant'
-  content: string
-}
-
-interface ApiResponse {
-  content: string
-}
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleSend = async (content: string) => {
-    setIsLoading(true);
-    console.log('Request payload:', {
-      messages: [...messages, { role: 'user', content }]
-    });
-
-    try {
-      const response = await fetch('/api/chat/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [...messages, { role: 'user', content }]
-        }),
-      });
-
-      console.log('Response status:', response.status);
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
-        throw new Error('Failed to send message');
-      }
-
-      const data = await response.json() as ApiResponse;
-      console.log('Response data:', data);
-
-      setMessages(prev => [
-        ...prev,
-        { role: 'user', content },
-        { role: 'assistant', content: data.content }
-      ]);
-    } catch (error) {
-      console.error('Error in handleSend:', error);
-      setMessages(prev => [
-        ...prev,
-        { role: 'user', content },
-        { role: 'assistant', content: 'Sorry, there was an error processing your message.' }
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  const handleEdit = async (index: number, newContent: string) => {
-    const newMessages = messages.map((msg, i) =>
-      i === index ? { ...msg, content: newContent } : msg
-    )
-    const truncated = newMessages.slice(0, index + 1)
-    setMessages(truncated)
-    setIsLoading(true)
-    
-    try {
-      const response = await fetch('/api/chat/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: truncated }),
-      })
-      console.log('Edit response status:', response.status);
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
-        throw new Error('Failed to send message');
-      }
-      const data = await response.json() as ApiResponse;
-      console.log('Edit response data:', data);
-      setMessages(prev => [
-        ...prev,
-        { role: 'assistant', content: data.content }
-      ])
-    } catch (error) {
-      console.error('Error in handleEdit:', error);
-      setMessages(prev => [
-        ...prev,
-        { role: 'assistant', content: 'Sorry, there was an error processing your message.' }
-      ])
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const router = useRouter()
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
-        <h1 className="text-4xl font-bold mb-8 text-center">Yoko, the smartest dog in the world:</h1>
-        <div className="bg-white rounded-lg shadow-lg p-4">
-          <Chat 
-            messages={messages} 
-            onSend={handleSend} 
-            onEdit={handleEdit}
-            isLoading={isLoading}
-          />
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-gradient-to-br from-blue-50 to-gray-100">
+      <div className="z-10 max-w-2xl w-full text-center">
+        <div className="animate-bounce mb-8">
+          <span className="text-6xl">🐾</span>
         </div>
-        <div className="w-full text-center mt-4 text-xs text-gray-400">
+        <h1 className="text-5xl font-bold mb-6 text-gray-800">
+          Welkom bij YokoAI
+        </h1>
+        <p className="text-xl text-gray-600 mb-12">
+          Je persoonlijke AI Border Collie assistent is klaar om je te helpen! 
+          Klik op de knop hieronder om Yoko te roepen.
+        </p>
+        <button
+          onClick={() => router.push('/chat')}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-full 
+                   text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg
+                   flex items-center justify-center mx-auto space-x-3"
+        >
+          <span className="text-2xl">🐾</span>
+          <span>Roep Yoko</span>
+        </button>
+        <div className="mt-16 text-sm text-gray-400">
           v0.2.2
+          <br />
           Made by VDM Nexus
         </div>
       </div>
