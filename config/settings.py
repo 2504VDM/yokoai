@@ -33,7 +33,7 @@ DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 # Environment setting
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'production')
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com,yoko.vdmnexus.com,.vdmnexus.com').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com,yoko.vdmnexus.com,yokodev.vdmnexus.com,.vdmnexus.com').split(',')
 
 # Logging Configuration
 LOGGING = {
@@ -112,7 +112,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -197,6 +197,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://yoko.vdmnexus.com",
     "https://www.yoko.vdmnexus.com",
+    "https://yokodev.vdmnexus.com",
     "https://yokoai.vercel.app",
     "https://yoko-ai-frontend.vercel.app",
     "https://yokoai.onrender.com",
