@@ -9,10 +9,6 @@ interface Message {
   content: string
 }
 
-interface ApiResponse {
-  content: string
-}
-
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
