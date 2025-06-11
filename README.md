@@ -90,6 +90,22 @@ This project uses a staging-production workflow with automated deployments.
 - `develop` - Staging branch
 - Feature branches - For new features/fixes
 
+## 🌿 Branch Naming Convention
+
+### Branch Types:
+- **main:** Production ready code (protected)
+- **develop:** Integration branch for features
+- **feature/[feature-name]:** New features (e.g., `feature/ai-memory-system`)
+- **hotfix/[issue-name]:** Urgent fixes (e.g., `hotfix/auth-bug`)
+- **release/[version]:** Release preparation (e.g., `release/v0.3.0`)
+
+### YokoAI-Specific Branch Examples:
+- `feature/yoko-personality-enhancement`
+- `feature/conversation-memory-system`
+- `feature/multi-language-support`
+- `feature/role-switching-system`
+- `hotfix/claude-api-timeout`
+
 ### Development Process
 
 1. Create a feature branch from `develop`:
