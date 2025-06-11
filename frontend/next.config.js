@@ -8,9 +8,8 @@ const nextConfig = {
   // React optimizations
   reactStrictMode: true,
   
-  // Experimental optimizations
+  // Experimental optimizations (zonder problematische optimizeCss)
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@heroicons/react', 'lucide-react', '@supabase/supabase-js'],
   },
 
@@ -58,9 +57,6 @@ const nextConfig = {
           },
         },
       }
-
-      // Tree shaking optimization
-      config.optimization.usedExports = true
     }
 
     return config
@@ -106,7 +102,7 @@ const nextConfig = {
     ]
   },
 
-  // WWW redirect (behoud je domain setup)
+  // WWW redirect
   async redirects() {
     return [
       {
@@ -118,7 +114,7 @@ const nextConfig = {
     ]
   },
 
-  // Disable source maps in production voor kleinere bundles
+  // Disable source maps in production
   productionBrowserSourceMaps: false,
 }
 
