@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    appDir: true,
+    // appDir is removed - it's default in Next.js 14
   },
 
   // Fixed rewrites configuration with proper TypeScript types

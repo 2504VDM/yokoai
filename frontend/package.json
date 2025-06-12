@@ -2,6 +2,7 @@
   "name": "yokoai",
   "version": "0.2.3",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,8 +17,6 @@
     "@radix-ui/react-slot": "^1.2.0",
     "@radix-ui/react-toast": "^1.2.11",
     "@types/node": "^20.19.0",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
@@ -25,8 +24,8 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.503.0",
     "next": "14.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.1",
     "tailwind-merge": "^3.2.0",
@@ -35,13 +34,9 @@
     "zustand": "^5.0.5"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/postcss": "^4.1.10",
-    "@tailwindcss/typography": "^0.5.16",
-    "autoprefixer": "^10.4.21",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "eslint": "^8.56.0",
-    "eslint-config-next": "14.1.0",
-    "postcss": "^8.5.5",
-    "tailwindcss": "^4.1.10"
+    "eslint-config-next": "14.1.0"
   }
 }
