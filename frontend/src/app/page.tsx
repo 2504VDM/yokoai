@@ -2,79 +2,135 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
 
 export default function Home() {
   const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+    <main style={{
+      minHeight: '100vh',
+      backgroundColor: '#000',
+      color: '#fff',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '64px 16px'
+      }}>
+        <div style={{
+          maxWidth: '1000px',
+          margin: '0 auto',
+          textAlign: 'center'
+        }}>
+          <h1 style={{
+            fontSize: '64px',
+            fontWeight: 'bold',
+            marginBottom: '24px',
+            background: 'linear-gradient(to right, #fff, #9ca3af)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
             Yoko AI
           </h1>
-          <p className="text-xl text-gray-300 mb-12">
+          <p style={{
+            fontSize: '20px',
+            color: '#d1d5db',
+            marginBottom: '48px'
+          }}>
             Your intelligent AI Border Collie for seamless conversations and task management
           </p>
           
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
+          <button
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             onClick={() => router.push('/chat')}
-            className="px-8 py-4 bg-white text-black rounded-lg font-semibold text-lg 
-                     hover:bg-gray-100 transition-colors duration-300 relative overflow-hidden"
+            style={{
+              padding: '16px 32px',
+              backgroundColor: isHovered ? '#f3f4f6' : '#fff',
+              color: '#000',
+              borderRadius: '8px',
+              fontWeight: '600',
+              fontSize: '18px',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+            }}
           >
-            <span className="relative z-10">Get Yoko</span>
-            <motion.div
-              className="absolute inset-0 bg-gray-200"
-              initial={{ x: '-100%' }}
-              animate={{ x: isHovered ? '0%' : '-100%' }}
-              transition={{ duration: 0.3 }}
-            />
-          </motion.button>
-        </motion.div>
-
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-gray-900 p-6 rounded-xl"
-          >
-            <h3 className="text-xl font-semibold mb-4 text-white">Smart Conversations</h3>
-            <p className="text-gray-400">Engage in natural, context-aware discussions with our advanced AI</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="bg-gray-900 p-6 rounded-xl"
-          >
-            <h3 className="text-xl font-semibold mb-4 text-white">Task Management</h3>
-            <p className="text-gray-400">Efficiently organize and track your tasks with AI assistance</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="bg-gray-900 p-6 rounded-xl"
-          >
-            <h3 className="text-xl font-semibold mb-4 text-white">24/7 Availability</h3>
-            <p className="text-gray-400">Get instant help whenever you need it, day or night</p>
-          </motion.div>
+            Get Yoko
+          </button>
         </div>
-        <div className="mt-24 text-center text-gray-500 text-sm">
+
+        <div style={{
+          marginTop: '96px',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '32px'
+        }}>
+          <div style={{
+            backgroundColor: '#1f2937',
+            padding: '24px',
+            borderRadius: '12px'
+          }}>
+            <h3 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              marginBottom: '16px',
+              color: '#fff'
+            }}>
+              Smart Conversations
+            </h3>
+            <p style={{ color: '#9ca3af' }}>
+              Engage in natural, context-aware discussions with our advanced AI
+            </p>
+          </div>
+
+          <div style={{
+            backgroundColor: '#1f2937',
+            padding: '24px',
+            borderRadius: '12px'
+          }}>
+            <h3 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              marginBottom: '16px',
+              color: '#fff'
+            }}>
+              Task Management
+            </h3>
+            <p style={{ color: '#9ca3af' }}>
+              Efficiently organize and track your tasks with AI assistance
+            </p>
+          </div>
+
+          <div style={{
+            backgroundColor: '#1f2937',
+            padding: '24px',
+            borderRadius: '12px'
+          }}>
+            <h3 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              marginBottom: '16px',
+              color: '#fff'
+            }}>
+              24/7 Availability
+            </h3>
+            <p style={{ color: '#9ca3af' }}>
+              Get instant help whenever you need it, day or night
+            </p>
+          </div>
+        </div>
+        
+        <div style={{
+          marginTop: '96px',
+          textAlign: 'center',
+          color: '#6b7280',
+          fontSize: '14px'
+        }}>
           v0.2.3 | Made by VDM Nexus
         </div>
       </div>
