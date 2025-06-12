@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+// import "./globals.css";  // ← UITGESCHAKELD
 
 const inter = Inter({
   subsets: ["latin"],
@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "YokoAI",
-  description: "Smartest DOG in the world",
+  title: "YokoAI - Jouw AI Team",
+  description: "Bouw je perfecte AI werkteam. 24/7 beschikbaar.",
 };
 
 export default function RootLayout({
@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="nl">
+      <body className={`${inter.variable} font-sans`} style={{ margin: 0, padding: 0 }}>
         {children}
       </body>
     </html>

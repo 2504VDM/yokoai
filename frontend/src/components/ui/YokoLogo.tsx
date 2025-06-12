@@ -1,5 +1,6 @@
-// src/components/ui/YokoLogo.tsx
 'use client';
+
+import React from 'react';
 
 interface YokoLogoProps {
   size?: number;
@@ -8,7 +9,7 @@ interface YokoLogoProps {
 }
 
 // Compact logo voor chat headers en kleine ruimtes
-const YokoCompactLogo = ({ size = 40 }: { size: number }) => (
+const YokoCompactLogo: React.FC<{ size: number }> = ({ size }) => (
   <svg 
     width={size} 
     height={size} 
@@ -40,7 +41,7 @@ const YokoCompactLogo = ({ size = 40 }: { size: number }) => (
 );
 
 // Full logo voor landingspages
-const YokoFullLogo = ({ size }: { size: number }) => (
+const YokoFullLogo: React.FC<{ size: number }> = ({ size }) => (
   <svg 
     width={size} 
     height={size * 0.4} 
@@ -77,11 +78,11 @@ const YokoFullLogo = ({ size }: { size: number }) => (
   </svg>
 );
 
-export default function YokoLogo({ 
+const YokoLogo: React.FC<YokoLogoProps> = ({ 
   size = 40, 
   variant = 'compact', 
   className = '' 
-}: YokoLogoProps) {
+}) => {
   return (
     <div className={className}>
       {variant === 'compact' ? (
@@ -91,4 +92,6 @@ export default function YokoLogo({
       )}
     </div>
   );
-}
+};
+
+export default YokoLogo;
