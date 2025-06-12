@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import YokoLogo from '@/components/ui/YokoLogo'; // NIEUWE IMPORT
 
 export default function ChatPage() {
   const router = useRouter();
@@ -77,7 +76,7 @@ export default function ChatPage() {
       color: '#ffffff',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif'
     }}>
-      {/* Header Bar - UPDATED MET LOGO */}
+      {/* Header Bar */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -105,30 +104,26 @@ export default function ChatPage() {
             ← Back
           </button>
           
-          {/* NIEUWE Logo + Branding sectie */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <YokoLogo size={40} variant="compact" />
-            <div>
-              <h1 style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                margin: 0,
-                background: 'linear-gradient(45deg, #ffffff, #ff8c00)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>
-                YokoAI
-              </h1>
-              <p style={{
-                fontSize: '12px',
-                color: '#888',
-                margin: 0,
-                fontWeight: '400'
-              }}>
-                Your Virtual Employee That Delivers
-              </p>
-            </div>
+          <div>
+            <h1 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              margin: 0,
+              background: 'linear-gradient(45deg, #ffffff, #ff8c00)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              YokoAI
+            </h1>
+            <p style={{
+              fontSize: '12px',
+              color: '#888',
+              margin: 0,
+              fontWeight: '400'
+            }}>
+              Your Virtual Employee That Delivers
+            </p>
           </div>
         </div>
 
