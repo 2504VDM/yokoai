@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "YokoAI - Jouw AI Team",
-  description: "Bouw je perfecte AI werkteam. 24/7 beschikbaar.",
+  title: "VDM Nexus",
+  description: "Business Intelligence Platform",
 };
 
 export default function RootLayout({

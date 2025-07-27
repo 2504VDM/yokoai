@@ -1,6 +1,6 @@
 {
-  "name": "yokoai",
-  "version": "0.2.3",
+  "name": "vdm-nexus",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {

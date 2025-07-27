@@ -1,8 +1,9 @@
+# backend/api/urls.py
 from django.urls import path
-from .views import ChatView
-from django.urls import re_path
-from django.views.decorators.http import require_http_methods
+from . import views
 
 urlpatterns = [
-    re_path(r'^chat/$', require_http_methods(["POST"])(ChatView.as_view()), name='chat'),
-] 
+    path('health', views.health_check, name='health_check'),
+    path('vandermeulen', views.vandermeulen_data, name='vandermeulen_data'),
+    path('test-roi', views.test_roi_analysis, name='test_roi_analysis'),
+]

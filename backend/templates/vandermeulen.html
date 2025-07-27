@@ -1,0 +1,136 @@
+mkdir -p templates
+cat > templates/vandermeulen.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Van der Meulen Vastgoed - VDM Nexus Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #0a0a0a; color: white; }
+        .header { background: linear-gradient(135deg, #00ff88, #0066ff); padding: 20px; border-radius: 10px; text-align: center; }
+        .section { background: #1f2937; padding: 20px; margin: 20px 0; border-radius: 10px; }
+        .function-btn { background: #00ff88; color: black; padding: 10px 20px; margin: 10px; border: none; border-radius: 5px; cursor: pointer; }
+        .result { background: #374151; padding: 15px; margin: 10px 0; border-radius: 5px; white-space: pre-wrap; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏢 Van der Meulen Vastgoed</h1>
+        <p>VDM Nexus Business Intelligence Platform - Test Interface</p>
+    </div>
+
+    <div class="section">
+        <h2>📚 Knowledge Bases</h2>
+        <div>✅ Contracten & Huurovereenkomsten</div>
+        <div>✅ Financiële Administratie</div>
+        <div>✅ Pand Informatie</div>
+        <div>✅ Markt Analyse</div>
+        <p><em>Ready for document uploads</em></p>
+    </div>
+
+    <div class="section">
+        <h2>⚙️ Business Intelligence Functions</h2>
+        
+        <div>
+            <h3>Portfolio ROI Analysis</h3>
+            <textarea id="roi-input" placeholder="Vraag bijvoorbeeld: 'Wat is de ROI van mijn hele portfolio?' of 'Welk pand presteert het beste?'"></textarea>
+            <button class="function-btn" onclick="testROI()">Analyseer Portfolio ROI</button>
+            <div id="roi-result" class="result" style="display:none;"></div>
+        </div>
+
+        <div>
+            <h3>Quick Tests</h3>
+            <button class="function-btn" onclick="testHuurder()">Test Huurder Management</button>
+            <button class="function-btn" onclick="testWaarde()">Test Waardebepaling</button>
+            <button class="function-btn" onclick="testOnderhoud()">Test Onderhoudsplanning</button>
+            <div id="quick-result" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function testROI() {
+            const input = document.getElementById('roi-input').value || 'Wat is de ROI van mijn hele portfolio?';
+            const result = document.getElementById('roi-result');
+            
+            result.innerHTML = `🏢 Van der Meulen Vastgoed - Portfolio ROI Analyse
+
+Vraag: ${input}
+
+📊 Portfolio Overzicht:
+- Totaal aantal panden: 4
+- Totale waarde: €1.850.000
+- Gemiddeld rendement: 5.8%
+
+🏠 Top Performers:
+1. Kerkstraat 25: 6.8% ROI (€28.800 jaar inkomsten)
+2. Industrieweg 8: 6.2% ROI (€45.600 jaar inkomsten)  
+3. Hoofdstraat 12: 5.1% ROI (€22.400 jaar inkomsten)
+4. Parkstraat 4: 3.2% ROI (€15.200 jaar inkomsten)
+
+💡 Aanbevelingen:
+- Parkstraat 4: Overwegen verkoop (laag rendement)
+- Kerkstraat 25: Behouden (beste performer)
+- Industrieweg 8: Uitbreiden in dit gebied
+
+✅ Gebaseerd op: Financiële data, marktanalyse en pand specifieke informatie`;
+            
+            result.style.display = 'block';
+        }
+
+        function testHuurder() {
+            const result = document.getElementById('quick-result');
+            result.innerHTML = `👥 Huurder Management - Van der Meulen Vastgoed
+
+📋 Huidige Huurders Status:
+- J. van der Berg (Hoofdstraat 12): €850/maand - ✅ Up to date
+- M. Janssen (Kerkstraat 25): €1.200/maand - ⚠️ 5 dagen achterstand  
+- B.V. TechStart (Industrieweg 8): €2.100/maand - ✅ Betaald
+- Familie de Wit (Parkstraat 4): €650/maand - ✅ Up to date
+
+📊 Totaal maand inkomsten: €4.800
+⚠️ Openstaand: €1.200 (M. Janssen)
+
+📧 Acties: Automatische herinnering verstuurd naar M. Janssen`;
+            result.style.display = 'block';
+        }
+
+        function testWaarde() {
+            const result = document.getElementById('quick-result');
+            result.innerHTML = `🏠 Vastgoed Waardebepaling - Van der Meulen Vastgoed
+
+📈 Marktwaarde Analyse:
+- Kerkstraat 25: €385.000 → €420.000 (+9.1%) 
+- Industrieweg 8: €740.000 → €825.000 (+11.5%)
+- Hoofdstraat 12: €310.000 → €340.000 (+9.7%)
+- Parkstraat 4: €280.000 → €285.000 (+1.8%)
+
+🎯 Verkoop Strategie:
+✅ VERKOPEN: Parkstraat 4 (laag rendement + lage waardegroei)
+❌ BEHOUDEN: Kerkstraat 25 & Industrieweg 8 (sterke groei)
+
+📊 Markttrend: +8.2% dit jaar voor jouw gebied`;
+            result.style.display = 'block';
+        }
+
+        function testOnderhoud() {
+            const result = document.getElementById('quick-result');
+            result.innerHTML = `🔧 Onderhoudsplanning - Van der Meulen Vastgoed
+
+🚨 URGENT (binnen 2 weken):
+- Hoofdstraat 12: Lekkage dak reparatie - €2.800
+- Kerkstraat 25: CV ketel vervanging - €4.200
+
+⚠️ BELANGRIJK (binnen 2 maanden):
+- Industrieweg 8: Schilderwerk buitenkant - €8.500
+- Parkstraat 4: Elektra check + upgrade - €3.200
+
+💰 Totaal budget Q1: €18.700
+📊 60% doorberekenen aan huurders mogelijk
+
+🎯 Prioriteit: Start met lekkage (schade preventie)`;
+            result.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+EOF
