@@ -2,7 +2,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from agent.models import Client, ClientKnowledgeBase, BusinessFunction
+from agent.models import Client, ClientKnowledgeBase, AgentAction
 import json
 
 def health_check(request):
@@ -15,7 +15,7 @@ def vandermeulen_data(request):
     try:
         client = Client.objects.get(subdomain="vandermeulen")
         knowledge_bases = ClientKnowledgeBase.objects.filter(client=client)
-        business_functions = BusinessFunction.objects.filter(client=client)
+        business_functions = AgentAction.objects.filter(client=client)
         
         data = {
             'client': {

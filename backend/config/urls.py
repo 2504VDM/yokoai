@@ -3,15 +3,15 @@ from django.urls import path
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from agent.models import Client, ClientKnowledgeBase, BusinessFunction, ClientDocument
+from agent.models import Client, ClientKnowledgeBase, AgentAction, AgentConfig
 import json
 
 def api_vandermeulen(request):
     try:
         client = Client.objects.get(subdomain="vandermeulen")
         knowledge_bases = ClientKnowledgeBase.objects.filter(client=client)
-        business_functions = BusinessFunction.objects.filter(client=client)
-        documents = ClientDocument.objects.filter(knowledge_base__client=client)
+        business_functions = AgentAction.objects.filter(client=client)
+        documents = ClientKnowledgeBase.objects.filter(knowledge_base__client=client)
         
         return JsonResponse({
             'status': 'success',
@@ -25,7 +25,7 @@ def api_vandermeulen(request):
                     'id': str(kb.id), 
                     'name': kb.name, 
                     'description': kb.description,
-                    'document_count': ClientDocument.objects.filter(knowledge_base=kb).count()
+                    'document_count': ClientKnowledgeBase.objects.filter(knowledge_base=kb).count()
                 } for kb in knowledge_bases
             ],
             'business_functions': [
@@ -63,7 +63,7 @@ def upload_document(request):
         kb = ClientKnowledgeBase.objects.get(id=knowledge_base_id)
         
         # Simulate document processing
-        doc = ClientDocument.objects.create(
+        doc = ClientKnowledgeBase.objects.create(
             knowledge_base=kb,
             filename=filename,
             file_type=filename.split('.')[-1] if '.' in filename else 'unknown',

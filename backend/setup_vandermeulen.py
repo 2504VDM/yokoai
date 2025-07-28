@@ -4,7 +4,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-from agent.models import Client, ClientKnowledgeBase, BusinessFunction
+from agent.models import Client, ClientKnowledgeBase, AgentAction
 
 def setup_vandermeulen_vastgoed():
     # 1. Create client
@@ -118,7 +118,7 @@ def setup_vandermeulen_vastgoed():
     ]
     
     for func_data in business_functions:
-        func, created = BusinessFunction.objects.get_or_create(
+        func, created = AgentAction.objects.get_or_create(
             client=client,
             name=func_data["name"],
             defaults={
@@ -134,7 +134,7 @@ def setup_vandermeulen_vastgoed():
     print(f"📁 Client ID: {client.id}")
     print(f"🌐 Subdomain: {client.subdomain}.vdmnexus.com")
     print(f"📚 Knowledge bases: {ClientKnowledgeBase.objects.filter(client=client).count()}")
-    print(f"⚙️ Business functions: {BusinessFunction.objects.filter(client=client).count()}")
+    print(f"⚙️ Business functions: {AgentAction.objects.filter(client=client).count()}")
 
 if __name__ == "__main__":
     setup_vandermeulen_vastgoed()
