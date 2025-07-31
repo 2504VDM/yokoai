@@ -1,260 +1,306 @@
-'use client';
+import Link from 'next/link'
+import YokoLogo from '@/components/ui/YokoLogo'
 
-import React, { useState, useEffect } from 'react';
-
-export default function VDMNexusLanding() {
-  const [isHovered, setIsHovered] = useState(false);
-  const [backendData, setBackendData] = useState(null);
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:8080/api/vandermeulen')
-      .then(res => res.json())
-      .then(data => {
-        console.log('Backend data:', data);
-        setBackendData(data);
-      })
-      .catch(err => console.log('Backend error:', err));
-  }, []);
-
+export default function HomePage() {
   return (
-    <main style={{
-      minHeight: '100vh',
-      backgroundColor: '#0a0a0a',
-      color: '#ffffff',
-      padding: '0 20px'
-    }}>
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        paddingTop: '80px'
-      }}>
-        
-        {/* Navigation */}
-        <nav style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '80px'
-        }}>
-          <div style={{
-            fontSize: '28px',
-            fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #00ff88, #0066ff)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}>
-            VDM Nexus
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Navigation */}
+      <nav className="border-b border-white/10 bg-white/5 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center">
+              <YokoLogo className="h-8 w-auto" />
+              <span className="ml-2 text-xl font-bold text-white">VDM Nexus</span>
+            </div>
+            <div className="hidden md:flex items-center space-x-8">
+              <Link href="#features" className="text-white/80 hover:text-white transition-colors">
+                Features
+              </Link>
+              <Link href="#pricing" className="text-white/80 hover:text-white transition-colors">
+                Pricing
+              </Link>
+              <Link href="#demo" className="text-white/80 hover:text-white transition-colors">
+                Demo
+              </Link>
+              <Link href="/contact" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                Contact
+              </Link>
+            </div>
           </div>
-          
-          <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-            <a href="#platform" style={{ color: '#9ca3af', textDecoration: 'none' }}>Platform</a>
-            <a href="#pricing" style={{ color: '#9ca3af', textDecoration: 'none' }}>Pricing</a>
-            <a href="#contact" style={{ color: '#9ca3af', textDecoration: 'none' }}>Contact</a>
-            <button style={{
-              backgroundColor: '#00ff88',
-              color: '#000',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              border: 'none',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}>
-              Get Demo
-            </button>
-          </div>
-        </nav>
+        </div>
+      </nav>
 
-        {/* Hero Section */}
-        <div style={{ textAlign: 'center', marginBottom: '120px' }}>
-          <div style={{
-            fontSize: '64px',
-            fontWeight: 'bold',
-            lineHeight: '1.1',
-            marginBottom: '24px',
-            background: 'linear-gradient(135deg, #ffffff, #9ca3af)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}>
-            Transform Knowledge into
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+            Upload je data.
             <br />
-            <span style={{
-              background: 'linear-gradient(135deg, #00ff88, #0066ff)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              Competitive Intelligence
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Krijg je eigen AI platform.
             </span>
-          </div>
-          
-          <p style={{
-            fontSize: '24px',
-            color: '#9ca3af',
-            marginBottom: '48px',
-            maxWidth: '800px',
-            margin: '0 auto 48px auto'
-          }}>
-            Business Intelligence Platform waar elke Nederlandse enterprise client 
-            <br />een gepersonaliseerd subdomain krijgt met AI getraind op bedrijfskennis
+          </h1>
+          <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
+            VDM Nexus geeft Nederlandse bedrijven hun eigen business intelligence platform. 
+            Upload CSV files en krijg automatisch database + AI analysis tools op je eigen subdomain.
           </p>
-
-          <button
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{
-              backgroundColor: isHovered ? '#00ff88' : '#0066ff',
-              padding: '20px 40px',
-              color: isHovered ? '#000' : '#fff',
-              borderRadius: '12px',
-              fontWeight: '600',
-              fontSize: '20px',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              transform: isHovered ? 'scale(1.05)' : 'scale(1)'
-            }}
-          >
-            Schedule Enterprise Demo
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="#demo" 
+              className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+            >
+              Vraag Demo Aan
+            </Link>
+            <Link 
+              href="/vdmvastgoed.vdmnexus.com" 
+              className="border border-white/20 hover:border-white/40 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+            >
+              Bekijk Live Demo
+            </Link>
+          </div>
         </div>
+      </section>
 
-        {/* Pricing Section */}
-        <div id="pricing" style={{ marginBottom: '120px' }}>
-          <h2 style={{
-            fontSize: '48px',
-            fontWeight: 'bold',
-            textAlign: 'center',
-            marginBottom: '64px'
-          }}>
-            Enterprise Pricing
+      {/* Features Section */}
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold text-white text-center mb-16">
+            Waarom VDM Nexus?
           </h2>
-          
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '32px',
-            maxWidth: '1000px',
-            margin: '0 auto'
-          }}>
-            {/* Intelligence Starter */}
-            <div style={{
-              backgroundColor: '#1f2937',
-              padding: '32px',
-              borderRadius: '16px',
-              textAlign: 'center'
-            }}>
-              <h3 style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                marginBottom: '16px'
-              }}>
-                Intelligence Starter
-              </h3>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: 'bold',
-                color: '#00ff88',
-                marginBottom: '24px'
-              }}>
-                €499<span style={{ fontSize: '18px', color: '#9ca3af' }}>/maand</span>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-8 border border-white/20">
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
               </div>
-              <div style={{ textAlign: 'left', color: '#9ca3af' }}>
-                <div style={{ marginBottom: '12px' }}>✅ Custom subdomain</div>
-                <div style={{ marginBottom: '12px' }}>✅ 4 business functions</div>
-                <div style={{ marginBottom: '12px' }}>✅ Basic knowledge training</div>
-                <div style={{ marginBottom: '12px' }}>✅ Email support</div>
-              </div>
+              <h3 className="text-xl font-semibold text-white mb-4">Geen Technische Kennis Nodig</h3>
+              <p className="text-white/70">
+                Upload je CSV files en krijg automatisch een complete database met AI analysis tools. 
+                Geen code, geen complexe setup.
+              </p>
             </div>
-
-            {/* Business Intelligence */}
-            <div style={{
-              backgroundColor: '#1f2937',
-              padding: '32px',
-              borderRadius: '16px',
-              textAlign: 'center',
-              border: '2px solid #00ff88'
-            }}>
-              <div style={{
-                backgroundColor: '#00ff88',
-                color: '#000',
-                padding: '8px 16px',
-                borderRadius: '20px',
-                fontSize: '14px',
-                fontWeight: '600',
-                display: 'inline-block',
-                marginBottom: '16px'
-              }}>
-                MOST POPULAR
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-8 border border-white/20">
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
-              <h3 style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                marginBottom: '16px'
-              }}>
-                Business Intelligence
-              </h3>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: 'bold',
-                color: '#00ff88',
-                marginBottom: '24px'
-              }}>
-                €1.299<span style={{ fontSize: '18px', color: '#9ca3af' }}>/maand</span>
-              </div>
-              <div style={{ textAlign: 'left', color: '#9ca3af' }}>
-                <div style={{ marginBottom: '12px' }}>✅ All Starter features</div>
-                <div style={{ marginBottom: '12px' }}>✅ 8 business functions</div>
-                <div style={{ marginBottom: '12px' }}>✅ Advanced knowledge training</div>
-                <div style={{ marginBottom: '12px' }}>✅ Priority support</div>
-                <div style={{ marginBottom: '12px' }}>✅ Custom integrations</div>
-              </div>
+              <h3 className="text-xl font-semibold text-white mb-4">Eigen Subdomain Platform</h3>
+              <p className="text-white/70">
+                Krijg je eigen platform op [bedrijfnaam].vdmnexus.com met custom branding 
+                en industry-specifieke templates.
+              </p>
             </div>
-
-            {/* Enterprise Intelligence */}
-            <div style={{
-              backgroundColor: '#1f2937',
-              padding: '32px',
-              borderRadius: '16px',
-              textAlign: 'center'
-            }}>
-              <h3 style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                marginBottom: '16px'
-              }}>
-                Enterprise Intelligence
-              </h3>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: 'bold',
-                color: '#00ff88',
-                marginBottom: '24px'
-              }}>
-                €3.999<span style={{ fontSize: '18px', color: '#9ca3af' }}>/maand</span>
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-8 border border-white/20">
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
               </div>
-              <div style={{ textAlign: 'left', color: '#9ca3af' }}>
-                <div style={{ marginBottom: '12px' }}>✅ All Business features</div>
-                <div style={{ marginBottom: '12px' }}>✅ Unlimited functions</div>
-                <div style={{ marginBottom: '12px' }}>✅ Deep knowledge training</div>
-                <div style={{ marginBottom: '12px' }}>✅ 24/7 dedicated support</div>
-                <div style={{ marginBottom: '12px' }}>✅ Multi-tenant management</div>
+              <h3 className="text-xl font-semibold text-white mb-4">AI-Powered Insights</h3>
+              <p className="text-white/70">
+                Automatische business insights, predictive analytics en custom AI agents 
+                die jouw specifieke business kennen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Live Demo Section */}
+      <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold text-white text-center mb-16">
+            Bekijk het in Actie
+          </h2>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h3 className="text-2xl font-semibold text-white mb-6">
+                Van der Meulen Vastgoed - Live Demo
+              </h3>
+              <p className="text-white/70 mb-8">
+                Bekijk hoe Van der Meulen Vastgoed hun vastgoed portfolio beheert met VDM Nexus. 
+                Real-time dashboards, AI-powered insights en automatische data analysis.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center text-white/80">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <span>Property portfolio management</span>
+                </div>
+                <div className="flex items-center text-white/80">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <span>ROI analysis & predictions</span>
+                </div>
+                <div className="flex items-center text-white/80">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <span>Tenant payment tracking</span>
+                </div>
+                <div className="flex items-center text-white/80">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <span>AI-powered business insights</span>
+                </div>
+              </div>
+              <Link 
+                href="/vdmvastgoed.vdmnexus.com" 
+                className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold mt-8 transition-colors"
+              >
+                Bekijk Live Demo
+              </Link>
+            </div>
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-8 border border-white/20">
+              <div className="aspect-video bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                <div className="text-center text-white">
+                  <div className="text-4xl mb-4">🏠</div>
+                  <div className="text-lg font-semibold">Van der Meulen Vastgoed</div>
+                  <div className="text-sm opacity-80">Live Dashboard Demo</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Footer */}
-        <div style={{
-          textAlign: 'center',
-          paddingTop: '40px',
-          borderTop: '1px solid #374151',
-          color: '#6b7280',
-          fontSize: '14px'
-        }}>
-          <div>
-            © 2025 VDM Nexus B.V. - Business Intelligence Platform
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold text-white text-center mb-16">
+            Pricing
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-8 border border-white/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Starter</h3>
+              <div className="text-4xl font-bold text-white mb-6">€199<span className="text-lg font-normal text-white/70">/maand</span></div>
+              <ul className="space-y-3 text-white/70 mb-8">
+                <li>• 1 subdomain platform</li>
+                <li>• 5 CSV uploads (max 10MB)</li>
+                <li>• 1 custom AI agent</li>
+                <li>• 3 dashboard widgets</li>
+                <li>• 1.000 AI queries/maand</li>
+                <li>• Email support</li>
+              </ul>
+              <Link 
+                href="#demo" 
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold block text-center transition-colors"
+              >
+                Start Trial
+              </Link>
+            </div>
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-8 border border-purple-500 relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                Meest Populair
+              </div>
+              <h3 className="text-2xl font-semibold text-white mb-4">Business</h3>
+              <div className="text-4xl font-bold text-white mb-6">€499<span className="text-lg font-normal text-white/70">/maand</span></div>
+              <ul className="space-y-3 text-white/70 mb-8">
+                <li>• 1 subdomain met custom branding</li>
+                <li>• Unlimited CSV uploads (max 100MB)</li>
+                <li>• 3 AI agents met specialisaties</li>
+                <li>• 10 dashboard widgets</li>
+                <li>• 5.000 AI queries/maand</li>
+                <li>• Priority support</li>
+                <li>• API access</li>
+              </ul>
+              <Link 
+                href="#demo" 
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold block text-center transition-colors"
+              >
+                Start Trial
+              </Link>
+            </div>
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-8 border border-white/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Enterprise</h3>
+              <div className="text-4xl font-bold text-white mb-6">€1.299<span className="text-lg font-normal text-white/70">/maand</span></div>
+              <ul className="space-y-3 text-white/70 mb-8">
+                <li>• Multiple subdomains</li>
+                <li>• Enterprise data limits (1GB+)</li>
+                <li>• Unlimited AI agents</li>
+                <li>• Unlimited dashboard customization</li>
+                <li>• 25.000 AI queries/maand</li>
+                <li>• Dedicated support manager</li>
+                <li>• SSO integration</li>
+                <li>• Advanced API access</li>
+              </ul>
+              <Link 
+                href="/contact" 
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold block text-center transition-colors"
+              >
+                Contact Sales
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  );
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Klaar om te Beginnen?
+          </h2>
+          <p className="text-xl text-white/80 mb-8">
+            Boek een gratis demo en zie hoe VDM Nexus jouw business kan transformeren.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="#demo" 
+              className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+            >
+              Vraag Demo Aan
+            </Link>
+            <Link 
+              href="/contact" 
+              className="border border-white/20 hover:border-white/40 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-white/5 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center mb-4">
+                <YokoLogo className="h-6 w-auto" />
+                <span className="ml-2 text-lg font-bold text-white">VDM Nexus</span>
+              </div>
+              <p className="text-white/70">
+                Business intelligence platform voor Nederlandse bedrijven.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-4">Product</h4>
+              <ul className="space-y-2 text-white/70">
+                <li><Link href="#features" className="hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="#demo" className="hover:text-white transition-colors">Demo</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-white/70">
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><Link href="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
+                <li><Link href="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-white/70">
+                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-white/10 mt-8 pt-8 text-center text-white/70">
+            <p>&copy; 2024 VDM Nexus. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
 }

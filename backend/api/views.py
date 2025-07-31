@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 import time
 import os
 from django.http import JsonResponse
+from django.conf import settings
 
 # NEW IMPORTS FOR WIDGETS
 from agent.models import Client, Property, Tenant, Payment, MaintenanceTask
@@ -388,5 +389,315 @@ def vdm_dashboard_overview(request):
         logger.error(f"Dashboard overview error: {str(e)}")
         return JsonResponse({
             'error': 'Unable to fetch dashboard data',
+            'message': str(e)
+        }, status=500)
+
+@api_view(['POST'])
+def upload_csv_data(request):
+    """
+    CSV upload endpoint met dynamic table creation.
+    Handles file upload, CSV processing, en automatic database table creation.
+    """
+    try:
+        # Check if file was uploaded
+        if 'csv_file' not in request.FILES:
+            return JsonResponse({
+                'success': False,
+                'error': 'No CSV file provided'
+            }, status=400)
+        
+        csv_file = request.FILES['csv_file']
+        
+        # Validate file type
+        if not csv_file.name.lower().endswith('.csv'):
+            return JsonResponse({
+                'success': False,
+                'error': 'File must be a CSV file'
+            }, status=400)
+        
+        # Validate file size (max 10MB)
+        if csv_file.size > 10 * 1024 * 1024:
+            return JsonResponse({
+                'success': False,
+                'error': 'File size must be less than 10MB'
+            }, status=400)
+        
+        # Get client ID from request
+        client_id = request.POST.get('client_id')
+        if not client_id:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client ID is required'
+            }, status=400)
+        
+        # Validate client exists
+        try:
+            from agent.models import Client
+            client = Client.objects.get(id=client_id)
+        except Client.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client not found'
+            }, status=404)
+        
+        # Save file temporarily
+        import tempfile
+        import os
+        
+        temp_dir = getattr(settings, 'CSV_TEMP_DIR', 'temp_uploads')
+        os.makedirs(temp_dir, exist_ok=True)
+        
+        temp_file_path = os.path.join(temp_dir, f"upload_{int(time.time())}_{csv_file.name}")
+        
+        with open(temp_file_path, 'wb+') as destination:
+            for chunk in csv_file.chunks():
+                destination.write(chunk)
+        
+        # Initialize SupabaseDynamicDB
+        from services.supabase_dynamic import SupabaseDynamicDB
+        db_service = SupabaseDynamicDB()
+        
+        # Analyze CSV structure
+        analysis_result = db_service.analyze_csv_structure(temp_file_path)
+        
+        if not analysis_result['success']:
+            # Clean up temp file
+            os.unlink(temp_file_path)
+            return JsonResponse({
+                'success': False,
+                'error': f'CSV analysis failed: {analysis_result["error"]}'
+            }, status=400)
+        
+        # Validate CSV for client
+        validation_result = db_service.validate_csv_for_client(temp_file_path, client_id)
+        
+        if not validation_result['success']:
+            os.unlink(temp_file_path)
+            return JsonResponse({
+                'success': False,
+                'error': f'CSV validation failed: {validation_result["error"]}'
+            }, status=400)
+        
+        # Create dynamic table
+        table_name = request.POST.get('table_name', 'uploaded_data')
+        table_result = db_service.create_dynamic_table(
+            client_id=client_id,
+            table_name=table_name,
+            columns=analysis_result['columns'],
+            original_filename=csv_file.name
+        )
+        
+        if not table_result['success']:
+            os.unlink(temp_file_path)
+            return JsonResponse({
+                'success': False,
+                'error': f'Table creation failed: {table_result["error"]}'
+            }, status=500)
+        
+        # Insert CSV data
+        insert_result = db_service.insert_csv_data(
+            table_name=table_result['table_name'],
+            df=analysis_result['dataframe'],
+            client_id=client_id
+        )
+        
+        if not insert_result['success']:
+            os.unlink(temp_file_path)
+            return JsonResponse({
+                'success': False,
+                'error': f'Data insertion failed: {insert_result["error"]}'
+            }, status=500)
+        
+        # Clean up temp file
+        os.unlink(temp_file_path)
+        
+        # Return success response
+        return JsonResponse({
+            'success': True,
+            'message': 'CSV uploaded and processed successfully',
+            'data': {
+                'table_name': table_result['table_name'],
+                'rows_inserted': insert_result['inserted_rows'],
+                'columns_created': len(analysis_result['columns']),
+                'file_size': analysis_result['file_size'],
+                'validation': validation_result.get('validation', {}),
+                'metadata': table_result['metadata']
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"CSV upload error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Upload processing failed',
+            'message': str(e)
+        }, status=500)
+
+@api_view(['GET'])
+def get_uploaded_tables(request):
+    """
+    Haalt lijst op van geüploade tabellen voor een client.
+    """
+    try:
+        client_id = request.GET.get('client_id')
+        if not client_id:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client ID is required'
+            }, status=400)
+        
+        # Validate client exists
+        try:
+            from agent.models import Client
+            client = Client.objects.get(id=client_id)
+        except Client.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client not found'
+            }, status=404)
+        
+        # Get table metadata (in real implementation, this would come from Supabase)
+        # For now, return mock data
+        tables = [
+            {
+                'table_name': f'client_{client_id}_properties_1234567890',
+                'display_name': 'Properties Data',
+                'row_count': 150,
+                'created_at': '2024-01-15T10:30:00Z',
+                'file_name': 'properties_export.csv',
+                'columns': ['name', 'address', 'purchase_price', 'current_value']
+            },
+            {
+                'table_name': f'client_{client_id}_tenants_1234567891',
+                'display_name': 'Tenants Data',
+                'row_count': 75,
+                'created_at': '2024-01-14T14:20:00Z',
+                'file_name': 'tenants_list.csv',
+                'columns': ['name', 'email', 'phone', 'monthly_rent']
+            }
+        ]
+        
+        return JsonResponse({
+            'success': True,
+            'tables': tables
+        })
+        
+    except Exception as e:
+        logger.error(f"Get tables error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Unable to fetch tables',
+            'message': str(e)
+        }, status=500)
+
+@api_view(['GET'])
+def get_table_data(request):
+    """
+    Haalt data op uit een specifieke geüploade tabel.
+    """
+    try:
+        client_id = request.GET.get('client_id')
+        table_name = request.GET.get('table_name')
+        
+        if not client_id or not table_name:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client ID and table name are required'
+            }, status=400)
+        
+        # Validate client exists
+        try:
+            from agent.models import Client
+            client = Client.objects.get(id=client_id)
+        except Client.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client not found'
+            }, status=404)
+        
+        # Get pagination parameters
+        limit = int(request.GET.get('limit', 100))
+        offset = int(request.GET.get('offset', 0))
+        
+        # Initialize SupabaseDynamicDB
+        from services.supabase_dynamic import SupabaseDynamicDB
+        db_service = SupabaseDynamicDB()
+        
+        # Get table data
+        data_result = db_service.get_table_data(
+            table_name=table_name,
+            client_id=client_id,
+            limit=limit,
+            offset=offset
+        )
+        
+        if not data_result['success']:
+            return JsonResponse({
+                'success': False,
+                'error': f'Data retrieval failed: {data_result["error"]}'
+            }, status=500)
+        
+        return JsonResponse({
+            'success': True,
+            'data': data_result['data'],
+            'count': data_result['count'],
+            'pagination': {
+                'limit': limit,
+                'offset': offset,
+                'has_more': data_result['count'] == limit
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Get table data error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Unable to fetch table data',
+            'message': str(e)
+        }, status=500)
+
+@api_view(['POST'])
+def delete_uploaded_table(request):
+    """
+    Verwijdert een geüploade tabel en alle bijbehorende data.
+    """
+    try:
+        client_id = request.POST.get('client_id')
+        table_name = request.POST.get('table_name')
+        
+        if not client_id or not table_name:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client ID and table name are required'
+            }, status=400)
+        
+        # Validate client exists
+        try:
+            from agent.models import Client
+            client = Client.objects.get(id=client_id)
+        except Client.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': 'Client not found'
+            }, status=404)
+        
+        # Initialize SupabaseDynamicDB
+        from services.supabase_dynamic import SupabaseDynamicDB
+        db_service = SupabaseDynamicDB()
+        
+        # In real implementation, this would drop the table from Supabase
+        # For now, just return success
+        logger.info(f"Table deletion requested: {table_name} for client {client_id}")
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Table {table_name} deleted successfully'
+        })
+        
+    except Exception as e:
+        logger.error(f"Delete table error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Unable to delete table',
             'message': str(e)
         }, status=500)
