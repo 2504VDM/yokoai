@@ -15,12 +15,9 @@
       "dest": "config/wsgi.py"
     }
   ],
-  "env": {
-    "DJANGO_SETTINGS_MODULE": "config.settings",
-    "DEBUG": "False",
-    "ALLOWED_HOSTS": "*.vercel.app,*.now.sh,localhost,127.0.0.1",
-    "SUPABASE_URL": "https://oldsyjgsvpdqhcyrbray.supabase.co",
-    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZHN5amdzdnBkcWhjeXJicmF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NjMyNjUsImV4cCI6MjA2OTUzOTI2NX0.5X_FEyYMYf5kIK2Ynyw3PIaMoTLhYSy6x2cgnvDO0Jo",
-    "AVM_API_KEY": "avm_27af1a74-14e5-487c-8b10-7176002f74b1"
+  "functions": {
+    "config/wsgi.py": {
+      "maxDuration": 30
+    }
   }
 } 
