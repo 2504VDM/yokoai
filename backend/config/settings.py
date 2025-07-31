@@ -37,6 +37,8 @@ ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 ALLOWED_HOSTS_STR = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0,vdmnexus-backend.onrender.com')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STR.split(',')]
 
+# Force Render deployment fix - ensure vdmnexus-backend.onrender.com is allowed
+
 # Force disable HTTPS redirects for development
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False  
