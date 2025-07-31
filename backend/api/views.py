@@ -134,22 +134,7 @@ def vdm_payment_widget_data(request):
         # Run AVM payment analysis
         avm_result = run_payment_analysis_sync(tenant_data)
         
-        # Prepare widget response
-        widget_data = {
-            'summary': {
-                'total_tenants': len(tenant_data),
-                'total_monthly_income': float(total_monthly_income),
-                'on_time_percentage': avm_result.get('payment_trends', {}).get('on_time_percentage', 0),
-                'total_overdue_amount': avm_result.get('total_overdue_amount', 0),
-                'overdue_tenant_count': len(avm_result.get('overdue_tenants', []))
-            },
-            'urgent_cases': avm_result.get('urgent_cases', []),
-            'overdue_tenants': avm_result.get('overdue_tenants', []),
-            'recommendations': avm_result.get('recommendations', []),
-            'last_updated': time.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        
-        return JsonResponse(widget_data)
+        return JsonResponse(avm_result)
         
     except Exception as e:
         logger.error(f"Payment widget data error: {str(e)}")
@@ -185,28 +170,7 @@ def vdm_roi_widget_data(request):
         # Run AVM ROI analysis
         avm_result = run_roi_analysis_sync(property_data)
         
-        # Calculate additional metrics
-        portfolio_summary = avm_result.get('portfolio_summary', {})
-        property_performance = avm_result.get('property_performance', [])
-        
-        # Count performance ratings
-        performance_counts = {'EXCELLENT': 0, 'GOOD': 0, 'FAIR': 0, 'POOR': 0}
-        for prop in property_performance:
-            rating = prop.get('performance_rating', 'FAIR')
-            performance_counts[rating] += 1
-        
-        # Prepare widget response
-        widget_data = {
-            'portfolio_summary': portfolio_summary,
-            'property_performance': property_performance,
-            'performance_distribution': performance_counts,
-            'recommendations': avm_result.get('recommendations', []),
-            'top_performers': [p for p in property_performance if p.get('roi_percentage', 0) >= 6],
-            'needs_attention': [p for p in property_performance if p.get('roi_percentage', 0) < 4],
-            'last_updated': time.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        
-        return JsonResponse(widget_data)
+        return JsonResponse(avm_result)
         
     except Exception as e:
         logger.error(f"ROI widget data error: {str(e)}")
@@ -348,9 +312,9 @@ def vdm_dashboard_overview(request):
                 'summary': {
                     'total_tenants': len(tenant_data),
                     'total_monthly_income': float(total_monthly_income),
-                    'on_time_percentage': payment_analysis.get('payment_trends', {}).get('on_time_percentage', 0),
-                    'total_overdue_amount': payment_analysis.get('total_overdue_amount', 0),
-                    'overdue_tenant_count': len(payment_analysis.get('overdue_tenants', []))
+                    'on_time_percentage': payment_analysis.get('summary', {}).get('on_time_percentage', 0),
+                    'total_overdue_amount': payment_analysis.get('summary', {}).get('total_overdue_amount', 0),
+                    'overdue_tenant_count': payment_analysis.get('summary', {}).get('overdue_tenant_count', 0)
                 },
                 'urgent_cases': payment_analysis.get('urgent_cases', []),
                 'recommendations': payment_analysis.get('recommendations', [])

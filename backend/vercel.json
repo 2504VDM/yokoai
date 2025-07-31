@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "config/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "500mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "config/wsgi.py"
+    }
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "config.settings",
+    "DEBUG": "False",
+    "ALLOWED_HOSTS": "*.vercel.app,*.now.sh,localhost,127.0.0.1"
+  }
+} 

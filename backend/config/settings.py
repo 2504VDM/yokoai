@@ -36,16 +36,18 @@ ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 # HARDCODED FIX FOR RENDER - Force include all necessary hosts
 ALLOWED_HOSTS = [
     'localhost',
-    '127.0.0.1', 
+    '127.0.0.1',
     '0.0.0.0',
     'vdmnexus-backend.onrender.com',
     '*.onrender.com',  # Allow all Render subdomains
     '*',  # Allow all hosts in development
+    '*.vercel.app',  # Allow Vercel domains
+    '*.now.sh',  # Allow Vercel domains
 ]
 
 # Force disable HTTPS redirects for development
 SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False  
+SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 # Logging Configuration
