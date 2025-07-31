@@ -14,10 +14,5 @@
       "src": "/(.*)",
       "dest": "config/wsgi.py"
     }
-  ],
-  "functions": {
-    "config/wsgi.py": {
-      "maxDuration": 30
-    }
-  }
+  ]
 } 
