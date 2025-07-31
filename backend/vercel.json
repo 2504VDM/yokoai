@@ -14,5 +14,23 @@
       "src": "/(.*)",
       "dest": "config/wsgi.py"
     }
-  ]
+  ],
+  "functions": {
+    "config/wsgi.py": {
+      "excludeFiles": [
+        "venv/**",
+        "*.pyc",
+        "__pycache__/**",
+        ".git/**",
+        "tests/**",
+        "*.md",
+        "*.sql",
+        "*.log",
+        "db.sqlite3",
+        "migrations/**",
+        "templates/**",
+        "static/**"
+      ]
+    }
+  }
 } 

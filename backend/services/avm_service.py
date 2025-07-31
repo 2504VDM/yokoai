@@ -59,7 +59,7 @@ class AVMService:
                 return self._simulate_payment_analysis(tenants)
             
             # AVM MCP code voor payment analysis
-            avm_code = """
+        avm_code = """
 def analyze_payments(tenants_data):
     total_tenants = len(tenants_data)
     total_overdue_amount = 0
@@ -173,7 +173,7 @@ print(json.dumps(result))
             # Execute via AVM MCP (simulated for now)
             logger.info("Executing ROI analysis via AVM MCP")
             return self._simulate_roi_analysis(properties)
-            
+                
         except Exception as e:
             logger.error(f"ROI analysis failed: {e}")
             return self._simulate_roi_analysis(properties)
@@ -217,7 +217,7 @@ print(json.dumps(result))
         average_roi = (annual_rental_income / total_investment) * 100 if total_investment > 0 else 0
         
         return {
-            'portfolio_summary': {
+        'portfolio_summary': {
                 'total_properties': total_properties,
                 'total_investment': total_investment,
                 'total_current_value': total_current_value,
@@ -308,7 +308,7 @@ def run_payment_analysis_sync(tenants: List[Dict[str, Any]]) -> Dict[str, Any]:
     Sync wrapper voor run_payment_analysis
     """
     try:
-        avm_service = AVMService()
+    avm_service = AVMService()
         # Run async function in sync context
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -333,7 +333,7 @@ def run_roi_analysis_sync(properties: List[Dict[str, Any]]) -> Dict[str, Any]:
     Sync wrapper voor run_roi_analysis
     """
     try:
-        avm_service = AVMService()
+    avm_service = AVMService()
         # Run async function in sync context
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
