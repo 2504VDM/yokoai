@@ -298,3 +298,56 @@ print(json.dumps(result))
                 'Consider industry-specific analysis'
             ]
         }
+
+# =============================================================================
+# SYNC WRAPPER FUNCTIONS FOR API VIEWS
+# =============================================================================
+
+def run_payment_analysis_sync(tenants: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Sync wrapper voor run_payment_analysis
+    """
+    try:
+        avm_service = AVMService()
+        # Run async function in sync context
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            result = loop.run_until_complete(avm_service.run_payment_analysis(tenants))
+            return result
+        finally:
+            loop.close()
+    except Exception as e:
+        logger.error(f"Payment analysis failed: {e}")
+        return {
+            "error": "Analysis failed",
+            "total_tenants": len(tenants),
+            "total_overdue_amount": 0,
+            "overdue_tenants": [],
+            "risk_score": 0,
+            "recommendations": ["Unable to perform analysis"]
+        }
+
+def run_roi_analysis_sync(properties: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Sync wrapper voor run_roi_analysis
+    """
+    try:
+        avm_service = AVMService()
+        # Run async function in sync context
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            result = loop.run_until_complete(avm_service.run_roi_analysis(properties))
+            return result
+        finally:
+            loop.close()
+    except Exception as e:
+        logger.error(f"ROI analysis failed: {e}")
+        return {
+            "error": "Analysis failed",
+            "total_properties": len(properties),
+            "total_value": 0,
+            "total_roi": 0,
+            "recommendations": ["Unable to perform analysis"]
+        }
