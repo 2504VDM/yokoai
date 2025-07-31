@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: vdmnexus-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SUPABASE_URL
+        value: https://oldsyjgsvpdqhcyrbray.supabase.co
+      - key: SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZHN5amdzdnBkcWhjeXJicmF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NjMyNjUsImV4cCI6MjA2OTUzOTI2NX0.5X_FEyYMYf5kIK2Ynyw3PIaMoTLhYSy6x2cgnvDO0Jo
+      - key: SUPABASE_SERVICE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZHN5amdzdnBkcWhjeXJicmF5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Mzk2MzI2NSwiZXhwIjoyMDY5NTM5MjY1fQ.NAnrEUKZUqwK5TZbmiA21HQa6M4cNQZ2WZ2kx9uesJY
+      - key: AVM_API_KEY
+        value: avm_27af1a74-14e5-487c-8b10-7176002f74b1
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: vdmnexus-backend.onrender.com,localhost,127.0.0.1 
