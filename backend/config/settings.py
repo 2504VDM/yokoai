@@ -28,12 +28,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-default-dev-key-do-not-use-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # Force True for development
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 # Environment setting
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*']
+# Get allowed hosts from environment or use defaults
+ALLOWED_HOSTS_STR = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0,vdmnexus-backend.onrender.com')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STR.split(',')]
 
 # Force disable HTTPS redirects for development
 SECURE_SSL_REDIRECT = False
